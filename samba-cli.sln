@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samba", "Samba\Samba.csproj", "{872FB263-3955-491F-9EFD-165841792E11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{872FB263-3955-491F-9EFD-165841792E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{872FB263-3955-491F-9EFD-165841792E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{872FB263-3955-491F-9EFD-165841792E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{872FB263-3955-491F-9EFD-165841792E11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C54B6C27-1837-47A5-BDC0-D9F22A04DF65}
+	EndGlobalSection
+EndGlobal
