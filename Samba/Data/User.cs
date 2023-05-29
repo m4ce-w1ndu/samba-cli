@@ -1,8 +1,12 @@
-﻿namespace Samba.Data
+﻿using FileHelpers;
+using Samba.Common;
+
+namespace Samba.Data
 {
     /// <summary>
     /// User data holder class for file parsing
     /// </summary>
+    [DelimitedRecord(Constants.DEFAULT_DELIMITER)]
     public class User
     {
         /// <summary>
@@ -61,6 +65,18 @@
             AuxGroups = auxGroups;
             Id = id;
             Password = password;
+        }
+
+        /// <summary>
+        /// Reads and parses input CSV user file automatically
+        /// </summary>
+        /// <param name="filePath">Path to user file</param>
+        /// <returns>A list of <see cref="User"/> objects</returns>
+        public static List<User> LoadFromFile(string filePath)
+        {
+            var engine = new FileHelperEngine(typeof(User));
+            var result = engine.ReadFile(filePath).Select(r => (r as User)!).ToList();
+            return result ??= new List<User>();
         }
     }
 }
