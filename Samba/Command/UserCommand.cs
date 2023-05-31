@@ -20,14 +20,11 @@ namespace Samba.Command
             var log = CommonUtilities.Logger;
 
             var config = CFGReader.GetInstance();
+            var manager = ConnectionManager.GetInstance();
 
-            using var connection = new LdapConnection();
-            
             try
             {
-                connection.Connect(config.Domain, Const.DEFAULT_LDAP_PORT);
-                connection.Bind(config.AdminUser, config.AdminPasswd);
-
+                var connection = manager.Connect(config.Domain, config.AdminUser, config.AdminPasswd);
                 var searchBase = StringUtilities.GetSearchBaseFromFQDN(config.Domain);
                 var searchFilter = $"(&(objectCategory=user)(sAMAccountName={username}))";
                 var searchResponse = connection.Search(searchBase, LdapConnection.ScopeSub, searchFilter, null, false);
