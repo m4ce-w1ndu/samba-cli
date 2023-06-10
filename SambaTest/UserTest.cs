@@ -32,5 +32,11 @@ namespace SambaTest
             Assert.Equal("cf", result[1].Id);
             Assert.Equal("TestPassword", result[1].Password);
         }
+
+        public void User_Exists_Domain()
+        {
+            const string CFG_FILE = "test.conf";
+
+        }
     }
 }

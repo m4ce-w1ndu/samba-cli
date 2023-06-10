@@ -1,10 +1,6 @@
 ﻿using Samba.Data;
 using Samba.Configuration;
-using Samba.Common;
-using Novell.Directory.Ldap;
-
-// Samba constants
-using Const = Samba.Common.Constants;
+using System.Text.RegularExpressions;
 
 namespace Samba.Command
 {
@@ -17,26 +13,10 @@ namespace Samba.Command
         /// <returns>true if exists, false otherwise</returns>
         public static bool IsExistingUser(string username)
         {
-            var log = CommonUtilities.Logger;
-
             var config = CFGReader.GetInstance();
-            var manager = ConnectionManager.GetInstance();
-
-            try
-            {
-                var connection = manager.Connect(config.Domain, config.AdminUser, config.AdminPasswd);
-                var searchBase = StringUtilities.GetSearchBaseFromFQDN(config.Domain);
-                var searchFilter = $"(&(objectCategory=user)(sAMAccountName={username}))";
-                var searchResponse = connection.Search(searchBase, LdapConnection.ScopeSub, searchFilter, null, false);
-                return searchResponse.HasMore();
-            }
-            catch (LdapException e)
-            {
-                log.Error("severe problem detected! LDAP search failure: {@Message}.", e.Message);
-                Environment.Exit(Const.EXIT_FAILURE);
-            }
-
-            return false;
+            var runner = new CommandRunner(config.Executable, "user list");
+            var regex = new Regex($@"\b{username}\b");
+            return regex.IsMatch(runner.Output);
         }
 
         /// <summary>

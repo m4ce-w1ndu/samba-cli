@@ -8,7 +8,7 @@ namespace Samba.Configuration
         /// <summary>
         /// Instance of this class
         /// </summary>
-        private static CFGReader? instance;
+        private static readonly CFGReader? instance;
 
         /// <summary>
         /// Instance of the parser
@@ -65,6 +65,11 @@ namespace Samba.Configuration
         /// </summary>
         public string AdminPasswd { get; private set; }
 
+        /// <summary>
+        /// Samba executable path
+        /// </summary>
+        public string Executable { get; private set; }
+
         private CFGReader(string filepath)
         {
             File = filepath;
@@ -77,6 +82,7 @@ namespace Samba.Configuration
             GroupPoolOwner = string.Empty;
             AdminUser = string.Empty;
             AdminPasswd = string.Empty;
+            Executable = string.Empty;
             parser = new IniDataParser();
             ReadData();
         }
@@ -123,6 +129,7 @@ namespace Samba.Configuration
             GroupPoolOwner = data["AD"]["grp_pool_owner"];
             AdminUser = data["AD"]["admin_user"];
             AdminPasswd = data["AD"]["admin_passwd"];
+            Executable = data["AD"]["executable"];
         }
     }
 }
