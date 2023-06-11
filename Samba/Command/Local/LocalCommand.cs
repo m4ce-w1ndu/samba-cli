@@ -1,24 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Samba.Command.Local
+﻿namespace Samba.Command.Local
 {
-    public class LocalCommand : ICommand
+    /// <summary>
+    /// Local program to execute
+    /// </summary>
+    /// <param name="Executable">Executable path</param>
+    /// <param name="Arguments">Program arguments</param>
+    public record class Program(string Executable, string Arguments);
+
+    /// <summary>
+    /// Local command parameters
+    /// </summary>
+    public class LocalCommandParameters : CommandParameters
     {
-        public ExecutionResultState ExecutionResult { get; private set; }
+        /// <summary>
+        /// Standard output data
+        /// </summary>
+        public string StandardOutput { get; init; }
+        
+        /// <summary>
+        /// Standard error data
+        /// </summary>
+        public string StandardError { get; init; }
 
         /// <summary>
-        /// Executable file path
+        /// Result data
         /// </summary>
-        public string Executable { get; init; }
+        public ExecutionResult Result { get; init; }
 
+        public LocalCommandParameters(string standardOutput, string standardError, ExecutionResult result)
+        {
+            StandardOutput = standardOutput;
+            StandardError = standardError;
+            Result = result;
+        }
+    }
+
+    /// <summary>
+    /// Command to run locally on the system. It uses the
+    /// Process facility to run the command as a new process
+    /// on the local system
+    /// </summary>
+    public class LocalCommand : Command
+    {
         /// <summary>
-        /// Executable arguments
+        /// Program information
         /// </summary>
-        public string Arguments { get; init; }
+        public Program Program { get; init; }
 
         /// <summary>
         /// Standard output of the command
@@ -30,22 +57,29 @@ namespace Samba.Command.Local
         /// </summary>
         public string StandardError { get; private set; }
 
-        public virtual void Run()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
-        /// Construct a new local command
+        /// Construct a new Local command
         /// </summary>
-        /// <param name="executable">Executable path (or name, if executable is in PATH)</param>
-        /// <param name="arguments">Executable arguments</param>
-        public LocalCommand(string executable, string arguments)
+        /// <param name="program"></param>
+        public LocalCommand(Program program) : base(ExecutionResult.Undefined)
         {
-            Executable = executable;
-            Arguments = arguments;
+            Program = program;
             StandardOutput = string.Empty;
             StandardError = string.Empty;
+        }
+
+        public override void SetStatus(CommandParameters parameters)
+        {
+            if (parameters is LocalCommandParameters p)
+            {
+                StandardOutput = p.StandardOutput;
+                StandardError = p.StandardError;
+                Result = p.Result;
+            }
+            else
+            {
+                throw new ArgumentException($"{nameof(parameters)} is not valid for this context");
+            }
         }
     }
 }
