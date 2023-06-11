@@ -13,4 +13,10 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Command\Local\" />
+    <Folder Include="Command\LDAP\" />
+    <Folder Include="Command\Remote\" />
+  </ItemGroup>
+
 </Project>
