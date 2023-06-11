@@ -68,6 +68,11 @@
             StandardError = string.Empty;
         }
 
+        /// <summary>
+        /// Sets the status of a process
+        /// </summary>
+        /// <param name="parameters">Parameters for status settings</param>
+        /// <exception cref="ArgumentException">May be thrown if the command type is not valid</exception>
         public override void SetStatus(CommandParameters parameters)
         {
             if (parameters is LocalCommandParameters p)
