@@ -1,5 +1,8 @@
 ﻿namespace Samba.Command
 {
+    /// <summary>
+    /// Execution result of command
+    /// </summary>
     public enum ExecutionResult
     { 
         Ok,
