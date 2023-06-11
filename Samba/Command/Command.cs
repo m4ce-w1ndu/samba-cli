@@ -43,4 +43,10 @@
     /// into the command
     /// </summary>
     public abstract class CommandParameters { }
+
+    /// <summary>
+    /// Provides a unique abstract class for providing options to
+    /// the command generator
+    /// </summary>
+    public abstract class CommandOptions { }
 }
