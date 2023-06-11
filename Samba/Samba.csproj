@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Command\Local\" />
     <Folder Include="Command\LDAP\" />
     <Folder Include="Command\Remote\" />
   </ItemGroup>

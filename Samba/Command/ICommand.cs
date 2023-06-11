@@ -8,12 +8,12 @@
         /// <summary>
         /// Holds the execution result of the issued command
         /// </summary>
-        public ExecutionResultState ExecutionResult { get; init; }
+        public ExecutionResultState ExecutionResult { get; }
 
         /// <summary>
         /// Runs the command
         /// </summary>
-        public void Run();
+        public abstract void Run();
     }
 
     /// <summary>
