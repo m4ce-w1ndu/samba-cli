@@ -10,6 +10,6 @@
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public abstract Command Generate(CommandOptions options);
+        public abstract Command Generate();
     }
 }
