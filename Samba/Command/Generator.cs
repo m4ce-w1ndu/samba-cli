@@ -1,4 +1,6 @@
-﻿namespace Samba.Command
+﻿using Samba.Data.Attributes;
+
+namespace Samba.Command
 {
     /// <summary>
     /// Generates a new command to be run
@@ -10,6 +12,6 @@
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public abstract Command Generate();
+        public abstract Command Generate(IDataEntity entity);
     }
 }

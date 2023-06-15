@@ -1,5 +1,6 @@
 ﻿using FileHelpers;
 using Samba.Common;
+using Samba.Data.Attributes;
 
 namespace Samba.Data
 {
@@ -45,6 +46,8 @@ namespace Samba.Data
         /// </summary>
         public string Password { get; set; }
 
+        public bool HasAssociatedCommands { get; init; }
+
         public User()
         {
             Username = string.Empty;
@@ -54,6 +57,7 @@ namespace Samba.Data
             AuxGroups = string.Empty;
             Id = string.Empty;
             Password = string.Empty;
+            HasAssociatedCommands = true;
         }
 
         public User(string username, string lastName, string firstName, string mainGroup, string auxGroups, string id, string password)
@@ -65,6 +69,7 @@ namespace Samba.Data
             AuxGroups = auxGroups;
             Id = id;
             Password = password;
+            HasAssociatedCommands = true;
         }
 
         /// <summary>

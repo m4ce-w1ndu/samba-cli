@@ -3,12 +3,12 @@ using Samba.Common;
 
 namespace Samba.Configuration
 {
-    public class CFGReader
+    public class ConfigReader
     {
         /// <summary>
         /// Instance of this class
         /// </summary>
-        private static readonly CFGReader? instance;
+        private static readonly ConfigReader? instance;
 
         /// <summary>
         /// Instance of the parser
@@ -46,6 +46,21 @@ namespace Samba.Configuration
         public string HomeDirectoriesPath { get; private set; }
 
         /// <summary>
+        /// Share path for home directories
+        /// </summary>
+        public string HomeDirectoriesShare { get; private set; }
+
+        /// <summary>
+        /// Home drive letter
+        /// </summary>
+        public string HomeDriveLetter { get; private set; }
+
+        /// <summary>
+        /// User profile path (must be in the home dir share)
+        /// </summary>
+        public string ProfilePath { get; private set; }
+
+        /// <summary>
         /// Group pool path
         /// </summary>
         public string GroupPoolPath { get; private set; }
@@ -70,7 +85,7 @@ namespace Samba.Configuration
         /// </summary>
         public string Executable { get; private set; }
 
-        private CFGReader(string filepath)
+        private ConfigReader(string filepath)
         {
             File = filepath;
             FileText = System.IO.File.ReadAllText(File);
@@ -78,6 +93,9 @@ namespace Samba.Configuration
             NETBIOSDomain = string.Empty;
             DefaultDC = string.Empty;
             HomeDirectoriesPath = string.Empty;
+            HomeDirectoriesShare = string.Empty;
+            HomeDriveLetter = string.Empty;
+            ProfilePath = string.Empty;
             GroupPoolPath = string.Empty;
             GroupPoolOwner = string.Empty;
             AdminUser = string.Empty;
@@ -87,15 +105,15 @@ namespace Samba.Configuration
             ReadData();
         }
 
-        public static CFGReader GetInstance(string filepath)
+        public static ConfigReader GetInstance(string filepath)
         {
-            if (instance is null) return new CFGReader(filepath);
+            if (instance is null) return new ConfigReader(filepath);
             return instance;
         }
 
-        public static CFGReader GetInstance()
+        public static ConfigReader GetInstance()
         {
-            if (instance is null) return new CFGReader(Constants.DEFAULT_CFG_PATH);
+            if (instance is null) return new ConfigReader(Constants.DEFAULT_CFG_PATH);
             return instance;
         }
 
@@ -125,6 +143,9 @@ namespace Samba.Configuration
             NETBIOSDomain = data["AD"]["domain_nt"];
             DefaultDC = data["AD"]["default_dc_fqdn"];
             HomeDirectoriesPath = data["AD"]["home_dirs_path"];
+            HomeDirectoriesShare = data["AD"]["home_dirs_share"];
+            HomeDriveLetter = data["AD"]["home_drive_letter"];
+            ProfilePath = data["AD"]["profile_path"];
             GroupPoolPath = data["AD"]["grp_pool_path"];
             GroupPoolOwner = data["AD"]["grp_pool_owner"];
             AdminUser = data["AD"]["admin_user"];

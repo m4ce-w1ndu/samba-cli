@@ -1,4 +1,8 @@
-﻿namespace Samba.Command.Local
+﻿using Samba.Command.Local.User;
+using Samba.Configuration;
+using Samba.Data.Attributes;
+
+namespace Samba.Command.Local
 {
     /// <summary>
     /// Generates local commands 
@@ -23,9 +27,24 @@
         /// Generates a new local command
         /// </summary>
         /// <returns>New generated command</returns>
-        public override LocalCommand Generate()
+        public override LocalCommand Generate(IDataEntity entity)
         {
-            throw new NotImplementedException();
+            // We need to retrieve the instance of a configuration
+            // file reader
+            var config = ConfigReader.GetInstance();
+
+            // Executable path
+            var exec = config.Executable;
+            
+            if (entity is Data.User user)
+            {
+                var args = user.GenerateLocalCommand();
+                if (args is null) return new(new("", ""));
+
+                return new(new(exec, args));
+            }
+
+            return default;
         }
     }
 }
