@@ -5,23 +5,17 @@ namespace Samba.Data.Attributes
     /// <summary>
     /// User command attribute
     /// </summary>
-    [AttributeUsage(AttributeTargets.Constructor)]
-    public class UserCommand : Attribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public class HasCommand : Attribute
     {
         /// <summary>
         /// Command enabled
         /// </summary>
         public bool Enabled { get; init; }
 
-        /// <summary>
-        /// Commmand type
-        /// </summary>
-        public UserCommandType Type { get; init; }
-
-        public UserCommand(bool enabled, UserCommandType type = UserCommandType.Undefined)
+        public HasCommand(bool enabled)
         {
             Enabled = enabled;
-            Type = type;
         }
     }
 }

@@ -11,22 +11,23 @@ namespace Samba.Command.Local.User
         /// <summary>
         /// Generates a user command based on the attribute type
         /// </summary>
-        internal static string? GenerateLocalCommand(this DataUser user)
+        internal static string? GenerateLocalCommand(this DataUser user, ConfigReader? configReader = null)
         {
-            var command = typeof(DataUser).GetCustomAttributes(typeof(UserCommand), true)
-                                          .Select(a => (UserCommand)a).FirstOrDefault();
-            if (command is null) return null;
+            var command = typeof(DataUser).GetCustomAttributes(typeof(HasCommand), true)
+                                          .Select(a => (HasCommand)a).FirstOrDefault();
+            if (command is null || !command.Enabled) return null;
 
-            return command.Type switch
+            return user.CommandType switch
             {
-                UserCommandType.Add => GenerateAddCommand(user),
+                UserCommandType.Add => GenerateAddCommand(user, configReader),
                 _ => null
             };
         }
 
-        private static string GenerateAddCommand(DataUser userData)
+        private static string GenerateAddCommand(DataUser userData, ConfigReader? configReader)
         {
             var cmd = new StringBuilder($"user create {userData.Username} {userData.Password}");
+            var config = configReader is null ? ConfigReader.GetInstance() : configReader;
 
             // Add other settings to command if the fields are populated
             if (!string.IsNullOrEmpty(userData.LastName))
@@ -35,9 +36,8 @@ namespace Samba.Command.Local.User
                 cmd.Append($@" --given-name=""{userData.FirstName}"" ");
 
             // Read configuration to get user share directory
-            var config = ConfigReader.GetInstance();
             if (!string.IsNullOrEmpty(config.HomeDirectoriesShare))
-                cmd.Append($@" --home-directory=""\\\\{config.DefaultDC}\\{config.HomeDirectoriesShare}\\{userData.Username} ");
+                cmd.Append($@" --home-directory=""\\\\{config.DefaultDC}\\{config.HomeDirectoriesShare}\\{userData.Username}"" ");
             if (!string.IsNullOrEmpty(config.HomeDriveLetter))
                 cmd.Append($@" --home-drive={config.HomeDriveLetter} ");
             if (!string.IsNullOrEmpty(config.ProfilePath))

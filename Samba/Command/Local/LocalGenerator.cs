@@ -9,18 +9,16 @@ namespace Samba.Command.Local
     /// </summary>
     public class LocalGenerator : Generator
     {
-        /// <summary>
-        /// Commands options used to generate this new command
-        /// </summary>
-        public CommandOptions Options { get; set; }
+        private ConfigReader config;
 
-        /// <summary>
-        /// Creates an instance of a new command generator
-        /// </summary>
-        /// <param name="options"></param>
-        public LocalGenerator(CommandOptions options)
+        public LocalGenerator()
         {
-            Options = options;
+            config = ConfigReader.GetInstance();
+        }
+
+        public LocalGenerator(string cfgFilePath)
+        {
+            config = ConfigReader.GetInstance(cfgFilePath);
         }
 
         /// <summary>
@@ -29,16 +27,12 @@ namespace Samba.Command.Local
         /// <returns>New generated command</returns>
         public override LocalCommand Generate(IDataEntity entity)
         {
-            // We need to retrieve the instance of a configuration
-            // file reader
-            var config = ConfigReader.GetInstance();
-
             // Executable path
             var exec = config.Executable;
             
             if (entity is Data.User user)
             {
-                var args = user.GenerateLocalCommand();
+                var args = user.GenerateLocalCommand(config);
                 if (args is null) return new(new("", ""));
 
                 return new(new(exec, args));

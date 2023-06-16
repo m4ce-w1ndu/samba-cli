@@ -1,4 +1,5 @@
 ﻿using FileHelpers;
+using Samba.Command.Types;
 using Samba.Common;
 using Samba.Data.Attributes;
 
@@ -8,7 +9,8 @@ namespace Samba.Data
     /// User data holder class for file parsing
     /// </summary>
     [DelimitedRecord(Constants.DEFAULT_DELIMITER)]
-    public class User
+    [HasCommand(true)]
+    public class User : IDataEntity
     {
         /// <summary>
         /// Username of this AD user
@@ -46,7 +48,10 @@ namespace Samba.Data
         /// </summary>
         public string Password { get; set; }
 
-        public bool HasAssociatedCommands { get; init; }
+        /// <summary>
+        /// Associated command type
+        /// </summary>
+        public UserCommandType CommandType { get; private set; }
 
         public User()
         {
@@ -57,10 +62,10 @@ namespace Samba.Data
             AuxGroups = string.Empty;
             Id = string.Empty;
             Password = string.Empty;
-            HasAssociatedCommands = true;
+            CommandType = UserCommandType.Undefined;
         }
 
-        public User(string username, string lastName, string firstName, string mainGroup, string auxGroups, string id, string password)
+        public User(string username, string lastName, string firstName, string mainGroup, string auxGroups, string id, string password, UserCommandType commandType = UserCommandType.Undefined)
         {
             Username = username;
             LastName = lastName;
@@ -69,7 +74,7 @@ namespace Samba.Data
             AuxGroups = auxGroups;
             Id = id;
             Password = password;
-            HasAssociatedCommands = true;
+            CommandType = commandType;
         }
 
         /// <summary>
